@@ -5,8 +5,22 @@ import streamlit as st
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+RAW_DATA_DIR = PROJECT_ROOT / "data" / "raw"
 OUTPUT_DIR = PROJECT_ROOT / "data" / "outputs"
 
+@st.cache_data
+def load_orders() -> pd.DataFrame:
+    """Load the columns required for executive KPIs."""
+    return pd.read_csv(
+        RAW_DATA_DIR / "orders.csv",
+        usecols=[
+            "id",
+            "customer_id",
+            "total",
+            "placed_at",
+        ],
+        parse_dates=["placed_at"],
+    )
 
 @st.cache_data
 def load_elite_customers() -> pd.DataFrame:
